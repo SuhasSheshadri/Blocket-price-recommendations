@@ -1,0 +1,40 @@
+package com.price_recomendation;
+
+import java.io.IOException;
+
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+
+public class ElasticSearch {
+	
+	public static void main (String[] args){
+		@SuppressWarnings("resource")
+		
+		RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(
+        		new HttpHost("localhost", 9200, "http")));
+		
+		IndexRequest request = new IndexRequest(
+		        "posts", 
+		        "doc",  
+		        "1");   
+		String jsonString = "{" +
+		        "\"user\":\"kimchy\"," +
+		        "\"postDate\":\"2013-01-30\"," +
+		        "\"message\":\"trying out Elasticsearch\"" +
+		        "}";
+		request.source(jsonString, XContentType.JSON); 
+		
+        try {
+			IndexResponse indexRes = client.index(request);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+
+	}
+	
+}
