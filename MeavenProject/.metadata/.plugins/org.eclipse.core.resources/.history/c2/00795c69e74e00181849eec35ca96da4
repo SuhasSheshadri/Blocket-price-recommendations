@@ -1,0 +1,53 @@
+package com.price_recomendation;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
+
+public class ElasticSearch {
+	
+	public static void main (String[] args) throws IOException{
+		
+		RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(
+        		new HttpHost("localhost", 9200, "http")));
+		
+		IndexRequest request = new IndexRequest(
+		        "posts", 
+		        "doc",  
+		        "1");   
+		
+		Map<String, Object> json = new HashMap<String, Object>();
+		List<String> listString = new ArrayList<String>();
+		listString.add("String1");
+		listString.add("String2");
+		json.put("user","Viktor");
+		json.put("postDate",new Date());
+		json.put("message",listString);
+		
+		request.source(json, XContentType.JSON); 
+		
+		IndexResponse indexRes = client.index(request);
+		
+		GetRequest getRequest = new GetRequest(
+		        "posts", 
+		        "doc",  
+		        "1"); 
+		
+        client.close();
+        
+        System.out.println(request);
+	}
+	
+}
