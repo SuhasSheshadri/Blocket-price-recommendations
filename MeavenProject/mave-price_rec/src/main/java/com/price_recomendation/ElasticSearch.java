@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpHost;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -43,40 +45,43 @@ public class ElasticSearch {
 		IndexResponse indexResponse = client.index(indexRequest);
 		
 		
-		Map<String, Object> json2 = new HashMap<String, Object>();
-		List<String> listString2 = new ArrayList<String>();
-		listString.add("Blue");
-		listString.add("Fast");
-		listString.add("Furious");
-
-		json.put("title","Mazda 1992");
-		json.put("atttributes",listString);
-		json.put("price", 100.12);
-		json.put("url", "www.blocket.se");
-		json.put("region","Hela Sverige");
-		
-		
-		IndexRequest indexRequest2 = new IndexRequest("ads", "ad", "2")
-        .source(json);
-		
-		IndexResponse indexResponse2 = client.index(indexRequest2);
-		
-		GetRequest getRequest = new GetRequest(
-		        "ads", 
-		        "ad",  
-		        "1"); 
-		
-        GetResponse getResponse = client.get(getRequest);
-        listString = (List<String>) getResponse.getSource().get("message");
-        System.out.println(listString.get(0));
-        if (getResponse.getSource().get("price") instanceof String)  
-        System.out.println("Double");
+//		Map<String, Object> json2 = new HashMap<String, Object>();
+//		List<String> listString2 = new ArrayList<String>();
+//		listString.add("Blue");
+//		listString.add("Fast");
+//		listString.add("Furious");
+//
+//		json.put("title","Mazda 1992");
+//		json.put("atttributes",listString);
+//		json.put("price", 100.12);
+//		json.put("url", "www.blocket.se");
+//		json.put("region","Hela Sverige");
+//		
+//		
+//		IndexRequest indexRequest2 = new IndexRequest("ads", "ad", "2")
+//        .source(json);
+//		
+//		IndexResponse indexResponse2 = client.index(indexRequest2);
+//		
+//		GetRequest getRequest = new GetRequest(
+//		        "ads", 
+//		        "ad",  
+//		        "1"); 
+//		
+//        GetResponse getResponse = client.get(getRequest);
+//        listString = (List<String>) getResponse.getSource().get("message");
+//        System.out.println(listString.get(0));
+//        if (getResponse.getSource().get("price") instanceof String)  
+//        System.out.println("Double");
         
 		
+        DeleteIndexRequest request = new DeleteIndexRequest("posts"); 
+        DeleteIndexResponse deleteIndexResponse = client.indices().delete(request);
+        
         client.close();
         
         
-        System.out.println(getResponse);
+        //System.out.println(getResponse);
 	}
 	
 }
