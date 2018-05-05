@@ -1,42 +1,40 @@
+package com.price_recomendation;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Ad{
-	private String title;
-	private String[] attributes;
-	private String price;
-	private String url;
-	private String region;
-	//String text;
+	private String titleName = "title";
+	private String attributeName = "attributes";
+	private String priceName = "price";
+	private String regionName = "region";
+	private Map<String, Object> json = new HashMap<String, Object>();
 	
-	public Ad(String title, String[] attributes, String price, String url, String region){//String text){
-		this.title = title;
-		this.attributes = attributes;
-		this.price = price;
-		this.url = url;
-		this.region = region;
-		//this.text = text;
+	public Ad(String title, HashMap<String, Object> attributes, String price, String region){
+		json.put(titleName, title);
+		json.put(attributeName, attributes);
+		json.put(priceName, price);
+		json.put(regionName, region);
+	}
+	
+	public Map<String, Object> getJson(){
+		return this.json;
 	}
 	
 	public String getTitle(){
-		return title;
+		return (String)this.json.get(titleName);
 	}
 	
-	public String[] getAttributes(){
-		return attributes;
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getAttributes(){
+		return (Map<String, Object>)this.json.get(attributeName);
 	}
 	
 	public String getPrice(){
-		return price;
-	}
-	
-	public String getUrl(){
-		return url;
+		return (String)this.json.get(priceName);
 	}
 	
 	public String getRegion(){
-		return region;
+		return (String)this.json.get(regionName);
 	}
-	
-	/*
-	public String getText(){
-		return text;
-	}*/
 }
