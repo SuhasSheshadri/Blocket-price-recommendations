@@ -1,4 +1,3 @@
-﻿norrbotten
 vasterbotten
 jamtland
 vasternorrland
@@ -20,5 +19,3 @@ gotland
 halland
 kronoberg
 blekinge
-skane
-hela-sverige
