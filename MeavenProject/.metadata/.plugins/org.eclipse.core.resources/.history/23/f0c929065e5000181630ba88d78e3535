@@ -23,14 +23,15 @@ public class Crawler {
 	
 	public Crawler(){}
 	
-    private HashMap<Integer, String> catCode2Str = new HashMap<Integer, String>();
-    private HashMap<String, Integer> catStr2Code = new HashMap<String, Integer>();
-    private ArrayList<String> regions = new ArrayList<String>();
-	
-	public void readCategories()throws IOException{
-		String fileName = "src\\main\\resources\\Categories.txt";
-	      BufferedReader buf = new BufferedReader(new InputStreamReader(
-                new FileInputStream(fileName), "UTF8"));
+	public void crawlPage(String query, String category) throws IOException{
+
+	      
+          HashMap<Integer, String> catCode2Str = new HashMap<Integer, String>();
+          HashMap<String, Integer> catStr2Code = new HashMap<String, Integer>();
+
+	      String fileName = "src\\main\\resources\\Categories.txt";
+	      InputStream is = new FileInputStream(fileName);
+	      BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 	      
 	      String line = buf.readLine();
 	      while(line != null){
@@ -39,33 +40,23 @@ public class Crawler {
 	    	  String catName = newLine.split("\\s")[1];
 	    	  catCode2Str.put(catCode,catName);
 	    	  catStr2Code.put(catName, catCode);
-	    	  System.out.println(catName + " : " + catCode);
 	    	  line = buf.readLine();
 	      }
 	      buf.close();
-	}
-	
-	public void readRegions() throws IOException{
-		
-		ArrayList<String> regions = new ArrayList<String>();
-	    String fileName = "src\\main\\resources\\Regions.txt";
-	      BufferedReader buf = new BufferedReader(new InputStreamReader(
-	                new FileInputStream(fileName), "UTF8"));
 	      
-	      String line = buf.readLine();
+	      ArrayList<String> regions = new ArrayList<String>();
+	      fileName = "src\\main\\resources\\Regions.txt";
+	      is = new FileInputStream(fileName);
+	      buf = new BufferedReader(new InputStreamReader(is));
+	      
+	      line = buf.readLine();
 	      while(line != null){
-	    	  regions.add(line.toString());
-	    	  System.out.println(line.toString());
+	    	  String newLine = line.toString();
+	    	  regions.add(line);
 	    	  line = buf.readLine();
 	      }
 	      buf.close();
-		
-	}
-	
-	public void crawlPage(String query, String category) throws IOException{
-			
-		  readCategories();
-		  readRegions();
+	      
 	      
 	      query = query.replaceAll("\\s+", "+");
 	     

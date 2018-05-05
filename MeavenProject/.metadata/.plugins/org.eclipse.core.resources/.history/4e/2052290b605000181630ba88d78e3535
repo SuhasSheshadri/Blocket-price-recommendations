@@ -23,11 +23,11 @@ public class Crawler {
 	
 	public Crawler(){}
 	
-    private HashMap<Integer, String> catCode2Str = new HashMap<Integer, String>();
-    private HashMap<String, Integer> catStr2Code = new HashMap<String, Integer>();
-    private ArrayList<String> regions = new ArrayList<String>();
+    HashMap<Integer, String> catCode2Str = new HashMap<Integer, String>();
+    HashMap<String, Integer> catStr2Code = new HashMap<String, Integer>();
+    ArrayList<String> regions = new ArrayList<String>();
 	
-	public void readCategories()throws IOException{
+	public void readCategories(){
 		String fileName = "src\\main\\resources\\Categories.txt";
 	      BufferedReader buf = new BufferedReader(new InputStreamReader(
                 new FileInputStream(fileName), "UTF8"));
@@ -63,9 +63,9 @@ public class Crawler {
 	}
 	
 	public void crawlPage(String query, String category) throws IOException{
-			
-		  readCategories();
-		  readRegions();
+
+	      
+
 	      
 	      query = query.replaceAll("\\s+", "+");
 	     
