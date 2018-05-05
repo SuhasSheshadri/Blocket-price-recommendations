@@ -1,0 +1,47 @@
+0 Alla kategorier
+1000 FORDON
+1020 Bilar
+1040 Bildelar & Biltillbehör
+1060 Båtar
+1080 Båtdelar & tillbehör
+1100 Husvagnar & Husbilar
+1120 Mopeder & Atraktor
+1140 Motorcyklar
+1160 MCdelar & tillbehör
+1220 Lastbil Truck & Entreprenad
+1240 Skogs & Lantbruksmaskiner
+1180 Snöskotrar
+1200 Snöskoterdelar & tillbehör
+2000 FÖR HEMMET
+2020 Bygg & Trädgård
+2040 Möbler & Heminredning
+2060 Husgeråd & Vitvaror
+2026 Verktyg
+4000 PERSONLIGT
+4080 Kläder & Skor
+4060 Accessoarer & Klockor
+4020 Barnkläder & Skor
+4040 Barnartiklar & Leksaker
+5000 ELEKTRONIK
+5020 Datorer & TVspel
+5040 Ljud & Bild
+5060 Telefoner & Tillbehör
+6000 FRITID & HOBBY
+6020 Biljetter
+6024 Resor
+6040 Böcker & Studentlitteratur
+6060 Cyklar
+6080 Djur
+6100 Hobby & Samlarprylar
+6120 Hästar & Ridsport
+6140 Jakt & Fiske
+6160 Musikutrustning
+6180 Sport & Fritid
+7000 AFFÄRSVERKSAMHET
+7020 Affärsöverlåtelser
+7040 Inventarier & Maskiner
+7060 Lokaler & Fastigheter
+7080 Tjänster
+8000 Övrigt
+8020 Efterlysningar
+8040 Övrigt
