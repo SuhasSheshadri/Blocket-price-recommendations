@@ -1,0 +1,117 @@
+! ! - Comment, @ - Main Category (Non-selectable, Bold), # - Sub Category (Selectable) $ - Drop-down List (Heading - Values), % - Radio Button(Heading)
+@ ALLA KATEGORIER
+@ FORDON
+# Bilar
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, Över 500000
+$ Modellår från - 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 70-tal, 60-tal, 50-tal, 40-tal, 30-tal eller äldre
+$ Modellår till - 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 70-tal, 60-tal, 50-tal, 40-tal, 30-tal
+$ Miltal från - 0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000, 25000, 30000, 35000, 40000, 45000, 50000
+$ Miltal till - 499, 999, 1499, 1999, 2499, 2999, 3499, 3999, 4499, 4999, 5499, 5999, 6499, 6999, 7499, 7999, 8499, 8999, 9499, 9999, 10999, 11999, 12999, 13999, 14999, 15999, 16999, 17999, 18999, 19999, 24999, 29999, 34999, 39999, 44999, 49999, merän50000
+$ Hästkrafter från - 0, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 350, 400, 450, 500
+$ Hästkrafter till - 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 350, 400, 450, Över 500
+$ Drivmedel - Bensin, Diesel, El, Miljöbränsle/Hybrid
+$ Växellåda - Manuell, Automat
+$ Karossfärg - Vit, Grå/Silver, Brun, Svart, Röd/Orange, Gul, Grön, Blå/Lila
+% Fyrhjulsdrift
+% Begagnatförsäkring
+$ Type -  Småbil, Sedan, Halvkombi, Kombi, Coupé, Cab, SUV, Familjebuss, Yrkesfordon
+$ Brands - Alfa Romeo, Aston Martin, Audi, Bentley, BMW, Buick, Cadillac, Chevrolet, Chrysler, Citroën, Dacia, Daewoo, Dodge, Ferrari, Fiat, Ford, Honda, Hummer, Hyundai, Infiniti, Isuzu, Iveco, Jaguar, Jeep, Kia, Lamborghini, Lancia, Land Rover, Lexus, Lincoln, Lotus, Maserati, Mazda, McLaren, Mercedes-Benz, Mercury, Mini, Mitsubishi, Morgan, Nissan, Oldsmobile, Opel, Övriga, Peugeot, Plymouth, Pontiac, Porsche, Renault, Rolls-Royce, Rover/BMC, Saab, SEAT, Skoda, Smart, Ssang Yong, Subaru, Suzuki, Tesla, Toyota, Volkswagen, Volvo
+# Bildelar & Biltillbehör
+$ Options - Bilstereo, Däck & fälg, GPS, Reservdelar, Släp, Takboxar & takräcken, Övrigt
+# Båtar
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1200000, 1400000, 1600000, 1800000, 2000000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1200000, 1400000, 1600000, 1800000, Över 2000000
+$ Options - Motorbåt, Segelbåt, Gummi/ribbåt, Jolle/roddbåt, Kajak/kanot, Vattenskoter, Övrigt
+# Båtdelar & tillbehör
+$ Options - Motor & propeller, GPS & navigering, Båtplats & förvaring, Trailer, Övrigt
+# Husvagnar & Husbilar
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, Över 500000
+$ Options - Husvagn, Husbil, Tillbehör
+# Mopeder & Atraktor
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, Över 100000
+$ Options - Mopeder, A-Traktorer, Tillbehör
+# Motorcyklar
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, Över 500000
+$ Modellår från - 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980 eller äldre
+$ Modellår till - 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980 eller äldre
+$ Options - Cross/enduro, Custom, Fyrhjuling/ATV, Offroad, Scooter, Sport, Touring, Övrigt
+# MCdelar & tillbehör
+$ Options - Däck & fälg, Reservdelar, Hjälm/skydd/kläder, Övrigt
+# Lastbil Truck & Entreprenad
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1200000, 1400000, 1600000, 1800000, 2000000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1200000, 1400000, 1600000, 1800000, Över 2000000
+$ Options - Entreprenadmaskiner, Lastbil & buss, Truck & materialhantering
+# Skogs & Lantbruksmaskiner
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1200000, 1400000, 1600000, 1800000, 2000000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1200000, 1400000, 1600000, 1800000, Över 2000000
+$ Options - Grönytemaskiner, Lantbruksmaskiner, Skogsmaskiner
+# Snöskotrar
+$ Pris från - 0, 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, 500000
+$ Pris till - 5000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000, 220000, 230000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 350000, 400000, 450000, Över 500000
+# Snöskoterdelar & tillbehör
+@ FÖR HEMMET
+# Bygg & Trädgård
+$ Options - Badrum/WC/bastu, Byggmaterial, Kamin & värme, Kök, Trädgårdsmaskiner, Trädgård & uteplats, Övrigt
+# Möbler & Heminredning
+$ Options - Antikt & konst, Belysning, Bord & stolar, Hemtextil & prydnad, Hyllor & förvaring, Mattor, Säng & sovrum, Soffa/fåtölj/soffmöbler, TV- & stereomöbler, Övrigt
+# Husgeråd & Vitvaror
+$ Options - Diskmaskin, Kyl & frys, Kökstillbehör & porslin, Spis & micro, Tvättmaskin & torktumlare, Övrigt
+# Verktyg
+@ PERSONLIGT
+# Kläder & Skor
+$ Sex - Dam & herr, Dam, Herr
+$ Options - Brudklänningar, Byxor, Jackor & ytterplagg, Jeans, Kjolar & klänningar, Kostymer & kavajer, Skjortor, Skor, Toppar, Tröjor, Övrigt
+# Accessoarer & Klockor
+$ Options - Klockor, Smycken, Väskor
+# Barnkläder & Skor
+$ For - Flicka & pojke, Flicka, Pojke, Unisex
+$ Options - Kläder, Skor
+# Barnartiklar & Leksaker
+$ Options - Barnmöbler, Barnvagnar & tillbehör, Bilbarnstolar, Leksaker, Övrigt
+@ ELEKTRONIK
+# Datorer & TVspel
+$ Options - Stationära datorer, Bärbara datorer, Surfplattor, Datortillbehör & program, PC-spel & onlinespel, TV-spel, Övrigt
+# Ljud & Bild
+$ Options - Filmer & musik, Foto- & videokameror, MP3-spelare, Stereo & surround, Video- & DVD-spelare, TV & projektor, Övrigt
+# Telefoner & Tillbehör
+$ Options - Telefoner, Tillbehör
+@ FRITID & HOBBY
+# Biljetter
+$ Options - Konsert, Teater & show, Presentkort, Sport, Övrigt
+# Resor
+$ Options - Tåg, Charter- & paketresor, Övriga resor
+# Böcker & Studentlitteratur
+# Cyklar
+$ Options - Dam, Herr, Barn, Mountainbike, Racer, Övriga cyklar, Tillbehör
+# Djur
+$ Options - Hund, Katt, Katt- & hundtillbehör, Gnagare & kaniner, Reptil, Fågel, Fisk, Lantbruksdjur, Övriga djur, Tillbehör
+# Hobby & Samlarprylar
+$ Options - Frimärken & mynt, Hobbyfordon, Radiostyrt & modell, Serietidningar, Symaskin & textil, Historiska föremål, Övrigt
+# Hästar & Ridsport
+$ Options - Hästar, Ponnys, Utrustning, Foder & stall, Medryttare & fodervärd, Släp & transport, Övrigt
+# Jakt & Fiske
+$ Options - Jakt, Fiske, Övrigt
+# Musikutrustning
+$ Options - Gitarr/bas/förstärkare, Piano & klaviatur, Dragspel, Blåsinstrument, Trummor & slagverk, Studio- & scenutrustning, Övrigt
+# Sport & Fritid
+$ Options - Bollsport, Camping & friluftsliv, Dyk- & vattensport, Golf, Träning & hälsa, Vintersport, Övrigt
+@ AFFÄRSVERKSAMHET
+# Affärsöverlåtelser
+$ Options - Butik, Domäner & sajter, Frisörsalong, Restaurang & café, Övrigt
+# Inventarier & Maskiner
+$ Options - Butik & kassa, Frisör- & skönhetssalong, Kontor, Industrimaskiner, Restaurang & café, Varuparti & konkurslager, Övrigt
+# Lokaler & Fastigheter
+$ Pris från - 0, 100000, 200000, 300000, 400000, 500000, 750000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000
+$ Pris till - 100000, 200000, 300000, 400000, 500000, 750000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 4000000, 5000000, 6000000, 7000000, 8000000, Över 9000000
+$ Min area - 0, 50, 100, 150, 200, 300, 4500, 500, 800, 1000, 1500, 2000, 2500, 3000
+$ Max area - 50, 100, 150, 200, 300, 4500, 500, 800, 1000, 1500, 2000, 2500, Över 3000
+$ Options - Butiker, Industri & verkstad, Lager & förråd, Kontor, Övrigt
+# Tjänster
+$ Options - Bil & motor, Catering, Data, Djuravel, Ekonomi, Flytt & transport, Hantverkare, Hundvakt & djurskötsel, Kosmetik & hårvård, Musik & underhållning, Städning, Trädgård & markarbeten, Undervisning
+@ ÖVRIGT
+# Efterlysningar
+# Övrigt
