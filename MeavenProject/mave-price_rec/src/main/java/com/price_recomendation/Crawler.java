@@ -27,7 +27,7 @@ public class Crawler {
 		readRegions();
 	}
 	
-	public void crawlPage(String query, String category) throws IOException {
+	public List<Ad> crawlPage(String query, String category) throws IOException {
 		
 		query = query.replaceAll("\\s+", "+");
 
@@ -38,37 +38,73 @@ public class Crawler {
 		int numResults;
 		List<Integer> priceList;
 		List<String> titleList;
+		List<Ad> adList = new ArrayList<Ad>();
+		Element next;
+		String newUrl;
 		//HashMap<String, Integer> categoriesMap; //Not necessary??
-		for (String listRegion : regions) {
-			url = "https://www.blocket.se/" + listRegion + "?q=" + query + "&cg=" + catStr2Code.get(category);
-			doc = getDoc(url);
-			// Elements links = doc.select("a[href]");
-			imports = doc.select("link[href]");
-			numb_hits = doc.select("span.num_hits").first();
-			numResults = Integer.parseInt(numb_hits.text());
+		for (String region : regions) {
+			url = "https://www.blocket.se/" + region + "?q=" + query + "&cg=" + catStr2Code.get(category);
+			newUrl = url;
+			while(!url.contains("last=1")) {
+				
+				doc = getDoc(url);
+				// Elements links = doc.select("a[href]");
+				imports = doc.select("link[href]");
+				numb_hits = doc.select("span.num_hits").first();
+				numResults = Integer.parseInt(numb_hits.text());
 			
-			//Prints
-			print("\nImports: (%d)", imports.size());
-			for (Element link : imports) {
-				print(" * %s <%s> (%s)", link.tagName(), link.attr("abs:href"), link.attr("rel"));
-			}
-
-			if(numResults == 0) {
-				System.out.println(" No results");
-			}else {
-				System.out.println(numResults + " results for searched query");
-				priceList = priceList(doc);
-				System.out.println(" Number of ads with prices " + priceList.size());
-				if(priceList.size() == 0) {
-					System.out.println(" The result don't have any price labeled");
-				}else {
-					for(int i = 0; i < priceList.size(); i++) {
-						
+				//Prints
+				
+				print("\nImports: (%d)", imports.size());
+				for (Element link : imports) {
+					print(" * %s <%s> (%s)", link.tagName(), link.attr("abs:href"), link.attr("rel"));
+					if(link.attr("rel").equals("next")) {
+						//next = 
+						newUrl = link.attr("abs:href");
+						System.out.println("This is new url " + newUrl);
 					}
-					//categoriesMap = categoriesMap(doc);
+				}
+
+				if(numResults == 0) {
+					System.out.println(" No results");
+				}else {
+					System.out.println(numResults + " results for searched query");
+					adList = adList(doc, region, adList);
+					System.out.println(" Number of ads with prices " + adList.size());
+					if(adList.size() == 0) {
+						System.out.println(" The result don't have any price labeled");
+					}else {
+						for(int i = 0; i < adList.size(); i++) {
+						
+						}
+						//categoriesMap = categoriesMap(doc);
+					}
+				}
+				
+				//Next page 
+				if(!newUrl.equals(url)) {
+					url = newUrl;
+				}else {
+					url = "";
 				}
 			}
 		}
+		
+		return adList;
+	}
+	
+	private List<Ad> adList(Document doc, String region, List<Ad> adList){
+		Elements titles = doc.select("h1[itemprop=name]");
+		Elements prices = doc.select("p[itemprop=price]");
+		String title;
+		String price;
+		for(int i = 0; i < titles.size(); i++) {
+			title = titles.get(i).text();
+			price = prices.get(i).text();
+			Ad ad = new Ad(title, price, region);
+			adList.add(ad);
+		}
+		return adList;
 	}
 	
 	private Document getDoc(String url) throws IOException {
@@ -119,7 +155,7 @@ public class Crawler {
 		return categoriesMap;
 	}
 	
-	public void readCategories() throws IOException {
+	private void readCategories() throws IOException {
 		System.out.println("Printing categories");
 		String fileName = "src\\main\\resources\\Categories.txt";
 		BufferedReader buf = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF8"));
@@ -137,7 +173,7 @@ public class Crawler {
 		buf.close();
 	}
 
-	public void readRegions() throws IOException {
+	private void readRegions() throws IOException {
 		System.out.println("Printing regions");
 		String fileName = "src\\main\\resources\\Regions.txt";
 		BufferedReader buf = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF8"));
