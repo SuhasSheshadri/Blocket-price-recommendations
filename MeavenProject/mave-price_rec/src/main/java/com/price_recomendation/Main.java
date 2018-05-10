@@ -15,7 +15,9 @@ public class Main {
 		System.out.println("Number of ads saved in list: " + adList.size());
 		
 		ElasticSearch elastic = new ElasticSearch();
+		elastic.deleteIndex();
 		elastic.indexAds(adList);
+		System.out.println("done");
 		
 	}
 

@@ -100,7 +100,7 @@ public class Crawler {
 		Elements titles = doc.select("h1[itemprop=name]");
 		Elements prices = doc.select("p[itemprop=price]");
 		String title;
-		String price;
+		int price;
 		for(int i = 0; i < titles.size(); i++) {
 			if(!prices.get(i).text().equals("")) {
 				title = titles.get(i).text();
@@ -113,7 +113,8 @@ public class Crawler {
 					System.exit(1);
 				}
 				HashMap<String, Object> ad2Attr = getAttributes(adLink);
-				price = prices.get(i).text();
+				price = Integer.parseInt(prices.get(i).text().split("kr")[0].replaceAll("[^0-9.]", ""));
+				//price = prices.get(i).text();
 				Ad ad = new Ad(title,ad2Attr, price, region);
 				adList.add(ad);
 			}

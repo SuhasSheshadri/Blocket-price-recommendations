@@ -27,14 +27,13 @@ public class ElasticSearch {
 	public void indexAds(List<Ad> adList) throws IOException {
 		
 		IndexRequest indexRequest;
-		//IndexResponse indexResponse; 
 		Ad ad;
 		Map<String, Object> json;
 		for(int i = 0; i < adList.size(); i++) {
 			ad = adList.get(i);
 			json = ad.getJson();
-			indexRequest = new IndexRequest("ads", "ad", "").source(json);
-			//indexResponse = 
+			Integer id = new Integer(i);
+			indexRequest = new IndexRequest("ads", "ad", id.toString()).source(json);
 			client.index(indexRequest);
 		}
 		
@@ -43,7 +42,6 @@ public class ElasticSearch {
 	public void deleteIndex() throws IOException {
 		
 		DeleteIndexRequest request = new DeleteIndexRequest("ads");
-		//DeleteIndexResponse deleteIndexResponse = 
 		client.indices().delete(request);
 
 	}
