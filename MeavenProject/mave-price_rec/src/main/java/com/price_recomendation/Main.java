@@ -14,6 +14,9 @@ public class Main {
 		adList = crawler.crawlPage(query, category);
 		System.out.println("Number of ads saved in list: " + adList.size());
 		
+		ElasticSearch elastic = new ElasticSearch();
+		elastic.indexAds(adList);
+		
 	}
 
 }

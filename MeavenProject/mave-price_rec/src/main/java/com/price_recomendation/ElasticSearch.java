@@ -1,5 +1,6 @@
 package com.price_recomendation;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,11 +17,45 @@ import org.elasticsearch.client.RestHighLevelClient;
 
 public class ElasticSearch {
 
+	private RestHighLevelClient client; 
+	
+	public ElasticSearch() {
+		this.client = new RestHighLevelClient(
+				RestClient.builder(new HttpHost("localhost", 9200, "http")));
+	}
+	
+	public void indexAds(List<Ad> adList) throws IOException {
+		
+		IndexRequest indexRequest;
+		//IndexResponse indexResponse; 
+		Ad ad;
+		Map<String, Object> json;
+		for(int i = 0; i < adList.size(); i++) {
+			ad = adList.get(i);
+			json = ad.getJson();
+			indexRequest = new IndexRequest("ads", "ad", "").source(json);
+			//indexResponse = 
+			client.index(indexRequest);
+		}
+		
+	}
+	
+	public void deleteIndex() throws IOException {
+		
+		DeleteIndexRequest request = new DeleteIndexRequest("ads");
+		//DeleteIndexResponse deleteIndexResponse = 
+		client.indices().delete(request);
+
+	}
+	
+	public void closeClient() throws IOException {
+		
+		client.close();
+	}
+	/*
 	public static void main(String[] args) throws IOException {
 
-		RestHighLevelClient client = new RestHighLevelClient(
-				RestClient.builder(new HttpHost("localhost", 9200, "http")));
-
+		
 		Map<String, Object> json = new HashMap<String, Object>();
 		List<String> listString = new ArrayList<String>();
 		listString.add("Blue");
@@ -66,12 +101,9 @@ public class ElasticSearch {
 		// if (getResponse.getSource().get("price") instanceof String)
 		// System.out.println("Double");
 
-		DeleteIndexRequest request = new DeleteIndexRequest("posts");
-		DeleteIndexResponse deleteIndexResponse = client.indices().delete(request);
-
-		client.close();
+		
 
 		// System.out.println(getResponse);
-	}
+	}*/
 
 }
