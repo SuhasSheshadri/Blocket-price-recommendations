@@ -41,7 +41,6 @@ public class Crawler {
 		List<Ad> adList = new ArrayList<Ad>();
 		String newUrl;
 		//HashMap<String, Integer> categoriesMap; //Not necessary??
-		int counter = 0;
 
 		for (String region : regions) {
 			url = "https://www.blocket.se/" + region + "?q=" + query + "&cg=" + catStr2Code.get(category);
@@ -54,9 +53,8 @@ public class Crawler {
 			Elements titles = doc.select("h1[itemprop=name]");
 
 			while(!(titles.size()==0)) {
-				//counter++;
-				//System.out.println(counter);
 				doc = getDoc(url);
+				//System.out.println(" Fetching " + url);
 				// Elements links = doc.select("a[href]");
 				imports = doc.select("link[href]");
 				numb_hits = doc.select("span.num_hits").first();
@@ -64,12 +62,13 @@ public class Crawler {
 				//System.out.println("This is the pagenav " + doc.select("li[itemprop=url]").first());
 				
 				//Prints
-				print("\nImports: (%d)", imports.size());
+				//print("\nImports: (%d)", imports.size());
 				for (Element link : imports) {
 					//print(" * %s <%s> (%s)", link.tagName(), link.attr("abs:href"), link.attr("rel"));
 					if(link.attr("rel").equals("next")) {
 						newUrl = link.attr("abs:href");
-						System.out.println("This is new url " + newUrl);
+						newUrl = newUrl.replaceAll("hela_sverige",region);
+						//System.out.println("This is new url " + newUrl);
 					}
 				}
 
@@ -77,16 +76,9 @@ public class Crawler {
 					System.out.println(" No results");
 					break;
 				}else {
-					System.out.println(numResults + " results for searched query");
+					//System.out.println(numResults + " results for searched query");
 					adList = adList(doc, region, adList);
-					System.out.println(" Number of ads with prices " + adList.size());
-					if(adList.size() == 0) {
-						System.out.println(" The result don't have any price labeled");
-					}else {
-						for(int i = 0; i < adList.size(); i++) {
-						
-						}
-					}
+					//System.out.println(" Number of ads with prices " + adList.size());
 				}
 				
 				//Next page 
@@ -96,13 +88,15 @@ public class Crawler {
 					url = "";
 				}
 				titles = doc.select("h1[itemprop=name]");
+				// Break in case that there are no ads on next page
+				if (titles.size() < 50){break;}
 			}
 		}
 		
 		return adList;
 	}
 	
-	private List<Ad> adList(Document doc, String region, List<Ad> adList){
+	private List<Ad> adList(Document doc, String region, List<Ad> adList) throws IOException{
 		Elements titles = doc.select("h1[itemprop=name]");
 		Elements prices = doc.select("p[itemprop=price]");
 		String title;
@@ -110,16 +104,50 @@ public class Crawler {
 		for(int i = 0; i < titles.size(); i++) {
 			if(!prices.get(i).text().equals("")) {
 				title = titles.get(i).text();
+				String adLink = titles.get(i).children().attr("href");
+				// Testing the url:s
+				String test2 = titles.get(i).children().first().attr("href");
+				if(!adLink.equals(test2)){
+					System.out.println(adLink);
+					System.out.println(test2);
+					System.exit(1);
+				}
+				HashMap<String, Object> ad2Attr = getAttributes(adLink);
 				price = prices.get(i).text();
-				Ad ad = new Ad(title, price, region);
+				Ad ad = new Ad(title,ad2Attr, price, region);
 				adList.add(ad);
 			}
 		}
 		return adList;
 	}
 	
+	private HashMap<String, Object> getAttributes(String adLink ) throws IOException{
+		HashMap<String, Object> ad2Attr = new HashMap<String, Object>();
+		
+		Document doc = getDoc(adLink);
+		Elements itemDetails = doc.select("div[id=item_details]");
+		//System.out.println(itemDetails.size());
+		for (Element elem : itemDetails){
+			Elements children = elem.children();
+			for (Element child : children){
+				String childText = child.text();
+				String attrName = childText.split("\\s")[0];
+				//System.out.println(attrName);
+				String attrValue = childText.replaceAll(attrName,"").replaceAll("\\s", "");
+				if(attrValue.contains("-") && !attrValue.equals("-")){
+					String firstRange = attrValue.split("-")[0];
+					int secondRange = Integer.parseInt(attrValue.replaceAll(firstRange, "").replaceAll("-", ""));
+					attrValue = new Integer((Integer.parseInt(firstRange) + secondRange) / 2).toString();
+				}
+				ad2Attr.put(attrName, attrValue);
+			}
+		}
+		
+		return ad2Attr;
+	} 
+	
 	private Document getDoc(String url) throws IOException {
-		print("Fetching %s...", url);
+		//print("Fetching %s...", url);
 		Document doc = Jsoup.connect(url).get();
 		return doc;
 	}

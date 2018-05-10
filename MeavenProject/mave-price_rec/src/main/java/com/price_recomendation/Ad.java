@@ -10,7 +10,7 @@ public class Ad {
 	private String regionName = "region";
 	private Map<String, Object> json = new HashMap<String, Object>();
 
-	public Ad(String title, HashMap<String, Object> attributes, int price, String region) {
+	public Ad(String title, HashMap<String, Object> attributes, String price, String region) {
 		json.put(titleName, title);
 		json.put(attributeName, attributes);
 		json.put(priceName, price);
