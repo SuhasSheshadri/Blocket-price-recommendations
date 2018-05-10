@@ -39,27 +39,35 @@ public class Crawler {
 		List<Integer> priceList;
 		List<String> titleList;
 		List<Ad> adList = new ArrayList<Ad>();
-		Element next;
 		String newUrl;
 		//HashMap<String, Integer> categoriesMap; //Not necessary??
+		int counter = 0;
+
 		for (String region : regions) {
 			url = "https://www.blocket.se/" + region + "?q=" + query + "&cg=" + catStr2Code.get(category);
 			newUrl = url;
-			while(!url.contains("last=1")) {
-				
+			
+			doc = getDoc(url);
+			imports = doc.select("link[href]");
+			numb_hits = doc.select("span.num_hits").first();
+			numResults = Integer.parseInt(numb_hits.text());
+			Elements titles = doc.select("h1[itemprop=name]");
+
+			while(!(titles.size()==0)) {
+				//counter++;
+				//System.out.println(counter);
 				doc = getDoc(url);
 				// Elements links = doc.select("a[href]");
 				imports = doc.select("link[href]");
 				numb_hits = doc.select("span.num_hits").first();
 				numResults = Integer.parseInt(numb_hits.text());
-			
-				//Prints
+				//System.out.println("This is the pagenav " + doc.select("li[itemprop=url]").first());
 				
+				//Prints
 				print("\nImports: (%d)", imports.size());
 				for (Element link : imports) {
-					print(" * %s <%s> (%s)", link.tagName(), link.attr("abs:href"), link.attr("rel"));
+					//print(" * %s <%s> (%s)", link.tagName(), link.attr("abs:href"), link.attr("rel"));
 					if(link.attr("rel").equals("next")) {
-						//next = 
 						newUrl = link.attr("abs:href");
 						System.out.println("This is new url " + newUrl);
 					}
@@ -67,6 +75,7 @@ public class Crawler {
 
 				if(numResults == 0) {
 					System.out.println(" No results");
+					break;
 				}else {
 					System.out.println(numResults + " results for searched query");
 					adList = adList(doc, region, adList);
@@ -77,7 +86,6 @@ public class Crawler {
 						for(int i = 0; i < adList.size(); i++) {
 						
 						}
-						//categoriesMap = categoriesMap(doc);
 					}
 				}
 				
@@ -87,6 +95,7 @@ public class Crawler {
 				}else {
 					url = "";
 				}
+				titles = doc.select("h1[itemprop=name]");
 			}
 		}
 		
@@ -99,10 +108,12 @@ public class Crawler {
 		String title;
 		String price;
 		for(int i = 0; i < titles.size(); i++) {
-			title = titles.get(i).text();
-			price = prices.get(i).text();
-			Ad ad = new Ad(title, price, region);
-			adList.add(ad);
+			if(!prices.get(i).text().equals("")) {
+				title = titles.get(i).text();
+				price = prices.get(i).text();
+				Ad ad = new Ad(title, price, region);
+				adList.add(ad);
+			}
 		}
 		return adList;
 	}
