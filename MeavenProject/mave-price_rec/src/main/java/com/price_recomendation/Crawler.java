@@ -133,9 +133,9 @@ public class Crawler {
 			for (Element child : children){
 				String childText = child.text();
 				String attrName = childText.split("\\s")[0];
-				//System.out.println(attrName);
 				String attrValue = childText.replaceAll(attrName,"").replaceAll("\\s", "");
-				if(attrValue.contains("-") && !attrValue.equals("-")){
+				System.out.println("Attr name: " + attrName + " attr value: " + attrValue + " (" + adLink + ")");
+				if(attrValue.contains("-") && !attrValue.equals("-") && attrName.equals("Miltal")){
 					String firstRange = attrValue.split("-")[0];
 					int secondRange = Integer.parseInt(attrValue.replaceAll(firstRange, "").replaceAll("-", ""));
 					attrValue = new Integer((Integer.parseInt(firstRange) + secondRange) / 2).toString();
