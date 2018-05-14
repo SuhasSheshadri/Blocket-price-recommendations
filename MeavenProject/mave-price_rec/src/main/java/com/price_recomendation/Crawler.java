@@ -27,7 +27,7 @@ public class Crawler {
 		readRegions();
 	}
 	
-	public List<Ad> crawlPage(String query, String category) throws IOException {
+	public List<Ad> crawlPage(String query, String category, ElasticSearch elastic) throws IOException {
 		
 		query = query.replaceAll("\\s+", "+");
 
@@ -38,11 +38,13 @@ public class Crawler {
 		int numResults;
 		List<Integer> priceList;
 		List<String> titleList;
-		List<Ad> adList = new ArrayList<Ad>();
+		List<Ad> adList;
+		List<Ad> allAds = new ArrayList<Ad>();
 		String newUrl;
-		//HashMap<String, Integer> categoriesMap; //Not necessary??
-
-		for (String region : regions) {
+		
+		List<String> subRegions = regions.subList(regions.indexOf("stockholm"), regions.size()-1);
+		for (String region : subRegions) {
+			adList = new ArrayList<Ad>();
 			url = "https://www.blocket.se/" + region + "?q=" + query + "&cg=" + catStr2Code.get(category);
 			newUrl = url;
 			
@@ -91,9 +93,11 @@ public class Crawler {
 				// Break in case that there are no ads on next page
 				if (titles.size() < 50){break;}
 			}
+			elastic.indexAds(adList, category, region);
+			allAds.addAll(adList);
 		}
 		
-		return adList;
+		return allAds;
 	}
 	
 	private List<Ad> adList(Document doc, String region, List<Ad> adList) throws IOException{
@@ -134,7 +138,7 @@ public class Crawler {
 				String childText = child.text();
 				String attrName = childText.split("\\s")[0];
 				String attrValue = childText.replaceAll(attrName,"").replaceAll("\\s", "");
-				System.out.println("Attr name: " + attrName + " attr value: " + attrValue + " (" + adLink + ")");
+				//System.out.println("Attr name: " + attrName + " attr value: " + attrValue + " (" + adLink + ")");
 				if(attrValue.contains("-") && !attrValue.equals("-") && attrName.equals("Miltal")){
 					String firstRange = attrValue.split("-")[0];
 					int secondRange = Integer.parseInt(attrValue.replaceAll(firstRange, "").replaceAll("-", ""));
@@ -148,7 +152,7 @@ public class Crawler {
 	} 
 	
 	private Document getDoc(String url) throws IOException {
-		//print("Fetching %s...", url);
+		print("Fetching %s...", url);
 		Document doc = Jsoup.connect(url).get();
 		return doc;
 	}
