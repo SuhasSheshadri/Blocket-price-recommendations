@@ -1,24 +1,27 @@
 package com.price_recomendation;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException {
 
-		Crawler crawler = new Crawler();
+		//Crawler crawler = new Crawler();
 		String category = "Bilar";
-		String query = "Volvo xc90";
+		String query = "";
 		List<Ad> adList;
-		adList = crawler.crawlPage(query, category);
-		System.out.println("Number of ads saved in list: " + adList.size());
-		
 		ElasticSearch elastic = new ElasticSearch();
-		elastic.deleteIndex();
-		elastic.indexAds(adList);
-		System.out.println("done");
+		//adList = crawler.crawlPage(query, category, elastic);
 		
+		//System.out.println("Number of ads saved in list: " + adList.size());
+		//elastic.deleteIndex();
+		//elastic.indexAds(adList, category);
+		System.out.println("done");
+		List<String> list = new ArrayList<String>();
+		list.add("Hej");
+		elastic.searchElastic("", list, "", "");
 	}
 
 }
