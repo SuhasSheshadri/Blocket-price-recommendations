@@ -1,0 +1,20 @@
+# Musikutrustning
+$ Options - Gitarr/bas/förstärkare, Piano & klaviatur, Dragspel, Blåsinstrument, Trummor & slagverk, Studio- & scenutrustning, Övrigt
+# Sport & Fritid
+$ Options - Bollsport, Camping & friluftsliv, Dyk- & vattensport, Golf, Träning & hälsa, Vintersport, Övrigt
+@ AFFÄRSVERKSAMHET
+# Affärsöverlåtelser
+$ Options - Butik, Domäner & sajter, Frisörsalong, Restaurang & café, Övrigt
+# Inventarier & Maskiner
+$ Options - Butik & kassa, Frisör- & skönhetssalong, Kontor, Industrimaskiner, Restaurang & café, Varuparti & konkurslager, Övrigt
+# Lokaler & Fastigheter
+$ Pris från - 0, 100000, 200000, 300000, 400000, 500000, 750000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000
+$ Pris till - 100000, 200000, 300000, 400000, 500000, 750000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 4000000, 5000000, 6000000, 7000000, 8000000, Över 9000000
+$ Min area - 0, 50, 100, 150, 200, 300, 4500, 500, 800, 1000, 1500, 2000, 2500, 3000
+$ Max area - 50, 100, 150, 200, 300, 4500, 500, 800, 1000, 1500, 2000, 2500, Över 3000
+$ Options - Butiker, Industri & verkstad, Lager & förråd, Kontor, Övrigt
+# Tjänster
+$ Options - Bil & motor, Catering, Data, Djuravel, Ekonomi, Flytt & transport, Hantverkare, Hundvakt & djurskötsel, Kosmetik & hårvård, Musik & underhållning, Städning, Trädgård & markarbeten, Undervisning
+@ ÖVRIGT
+# Efterlysningar
+# Övrigt
