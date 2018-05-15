@@ -27,7 +27,7 @@ public class Crawler {
 		readRegions();
 	}
 	
-	public List<Ad> crawlPage(String query, String category, ElasticSearch elastic) throws IOException {
+	public List<Ad> crawlPage(String query, ElasticSearch elastic) throws IOException {
 		
 		query = query.replaceAll("\\s+", "+");
 
@@ -36,14 +36,11 @@ public class Crawler {
 		Elements imports;
 		Element numb_hits;
 		int numResults;
-		List<Integer> priceList;
-		List<String> titleList;
 		List<Ad> adList;
 		List<Ad> allAds = new ArrayList<Ad>();
 		String newUrl;
-		
-		List<String> subRegions = regions.subList(regions.indexOf("stockholm"), regions.size()-1);
-		for (String region : subRegions) {
+		String category = "Bilar";
+		for (String region : regions) {
 			adList = new ArrayList<Ad>();
 			url = "https://www.blocket.se/" + region + "?q=" + query + "&cg=" + catStr2Code.get(category);
 			newUrl = url;
@@ -96,6 +93,7 @@ public class Crawler {
 			elastic.indexAds(adList, category, region);
 			allAds.addAll(adList);
 		}
+	//	}
 		
 		return allAds;
 	}
