@@ -1,40 +1,211 @@
 package Model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 public class ElasticSearchData {
+	
+	//For the score terms
+	private Double score_attributes = 0.7;
+	private Double score_query = 0.3;
+
+	//Set by the Search View
+	private int total_num_attributes = 0;
+	
+	//Results for the search (using user specifications)
+	Map<String, Double> results = new HashMap<String, Double>();
+	Map<String, Integer> results_prices = new HashMap<String,Integer>();
+	
+	//ElasticSearch connection
+	private RestHighLevelClient client; 
 	
 	//Data that we need to send to the Elastic Search.
 	private String Location = " ";
 	//Attributes selected //HashMap (Key -> attributes.Name, Value -> Value of the attribute selected)
-	private HashMap<String,String> attributes;
+	private HashMap<String,Object> attributes;
 	//Category selected
 	private String Category = " ";
 	//Query selected by the user
 	private String Query = " ";
-	
 	
 	//Information to fill based on what the ElasticSearch Search function return
 	//Prices information:
 	private String Lowest = " ";
 	private String Highest = " ";
 	private String Average = " ";
+	
 	//10 top results:
 	private ArrayList<String> topNames;
 	private ArrayList<Double> topPrices;
 	
-	
 	public ElasticSearchData() {
 		topNames = new ArrayList<String>();
 		topPrices = new ArrayList<Double>();
-		attributes = new HashMap<String,String>();
+		attributes = new HashMap<String,Object>();
+		this.client = new RestHighLevelClient(
+				RestClient.builder(new HttpHost("localhost", 9200, "http")));
 	}
 	
-	public void Search() {
-		System.out.println("Implementation of the Search function");
-		//This function needs: location, attributes, category and query.
+	
+	public void Score() {
+		System.out.println("Score system");
+		//1. Now we have the correspondence score per each case.
 		
+		//1.0 Sort the HashMap based on the score associated.
+		
+		//2.0 Return the top 50 results or less.
+		
+		//3.0 Calculate the highest, lowest and average price based on the top 50.
+		
+		//4.0 Update the names of the top 10 results based on. 
+	}
+	
+	
+	public void Search() throws IOException{
+		
+		ArrayList<String> removed_attributes = new ArrayList<String>();
+		String location = this.Location;
+		String category = "bilar";
+		//String category = this.Category;
+		String query = this.Query;
+
+		query="volvo s80";
+		location ="vasterbotten";
+		//System.out.println("Implementation of the Search function");
+		SearchRequest searchRequest = new SearchRequest(category);
+		int s = 10000;
+		
+		//Results map will store: DocId, Score
+		results.clear();
+		results_prices.clear();
+		
+		String[] query_parts = query.split(" ");
+		int query_size = query_parts.length;
+		removed_attributes.clear();
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder(); 
+		searchSourceBuilder.size(s);
+		 
+		//1. Find all the documents that contain or all the terms in the query or only some of them.
+		for (int i = 0; i < query_size; i++) {
+			String query_part = query_parts[i];
+			//System.out.println("Find for :" +query_part);
+			searchSourceBuilder.query(QueryBuilders.boolQuery().must(QueryBuilders.termQuery("region",location)).must(QueryBuilders.termQuery("title", query_part)));
+			searchRequest.source(searchSourceBuilder);
+			SearchResponse searchResponse = client.search(searchRequest);
+			SearchHits hits = searchResponse.getHits();
+			SearchHit[] searchHits = hits.getHits();
+			for(SearchHit hit: searchHits) {
+				Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+				String title = sourceAsMap.get("title").toString();
+				if(!results.containsKey(hit.getId().toString())) {
+					results.put(hit.getId().toString(), 1.0);
+					String price = sourceAsMap.get("price").toString();
+					results_prices.put(hit.getId().toString(), Integer.parseInt(price));
+				}else {
+					results.put(hit.getId().toString(), results.get(hit.getId().toString()) + 1.0);
+				}
+			}
+		}
+		//Normalize the query score per each document.
+		for(Map.Entry<String,Double> entry: results.entrySet()) {
+			if (results.containsKey(entry.getKey())) {	
+				results.put(entry.getKey(),score_query*(results.get(entry.getKey())/(double)query_size));
+			}
+		}
+		
+		System.out.println("The number of selected attributes is: " + total_num_attributes);
+		
+		//2. Now we are going to analyze the attributes.
+		Map<String, Double> results_att = new HashMap<String, Double>();
+		if (total_num_attributes > 0) {
+			for (Map.Entry<String,Object> entry: attributes.entrySet()) {
+				if (entry.getKey().toLowerCase().contains("fran") || entry.getKey().toLowerCase().contains("till")) {
+					if (!removed_attributes.contains(entry.getKey().toLowerCase())) {
+						String[] key_parts = entry.getKey().toString().split("attributes.");
+						String[] key_parts2 = key_parts[1].split(" ");
+						String common = key_parts2[0];
+						if (entry.getKey().toLowerCase().contains("fran")) {
+							String find = "attributes." + common +" till";
+							if (attributes.containsKey(find)) {
+								total_num_attributes--;
+								String till = attributes.get(find).toString();	
+								common = "attributes." + common;
+								searchSourceBuilder.query(QueryBuilders.boolQuery()
+										.must(QueryBuilders.termQuery("region", location))
+										.must(QueryBuilders.rangeQuery(common).gte(entry.getValue()).lte(till)));
+								removed_attributes.add(find.toLowerCase());
+							}else {
+								//No limit
+								common = "attributes." + common;
+								searchSourceBuilder.query(QueryBuilders.boolQuery().must(QueryBuilders.termQuery("region",location)).must(QueryBuilders.rangeQuery(common).gte(entry.getValue().toString())));
+							}
+						}else {
+							//Contains till,
+							String find = "attributes." + common + " fran";
+							if(attributes.containsKey(find)) {								
+								String fran = attributes.get(find).toString();
+								common = "attributes." + common;
+								total_num_attributes--;
+								searchSourceBuilder.query(QueryBuilders.boolQuery()
+										.must(QueryBuilders.termQuery("region", location))
+										.must(QueryBuilders.rangeQuery(common).gte(fran).lte(entry.getValue())));				
+								removed_attributes.add(find.toLowerCase());
+							}else {
+								//No limit
+								common = "attributes."+common;
+								searchSourceBuilder.query(QueryBuilders.boolQuery().must(QueryBuilders.termQuery("region",location)).must(QueryBuilders.rangeQuery(common).lte(entry.getValue().toString())));
+							}
+						}	
+					}
+				}else {
+					//Non-range query
+					searchSourceBuilder.query(QueryBuilders.boolQuery().must(QueryBuilders.termQuery("region", location)).must(QueryBuilders.termQuery(entry.getKey(),entry.getValue())));
+				}
+				searchRequest.source(searchSourceBuilder);
+				SearchResponse searchResponse = client.search(searchRequest);
+				SearchHits hits = searchResponse.getHits();
+				SearchHit[] searchHits = hits.getHits();
+				for(SearchHit hit: searchHits) {
+					Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+					//System.out.println(sourceAsMap);
+					if(!results_att.containsKey(hit.getId().toString())) {
+						results_att.put(hit.getId().toString(), 1.0);
+						String price = sourceAsMap.get("price").toString();
+						results_prices.put(hit.getId().toString(), Integer.parseInt(price));
+					}else {
+						results_att.put(hit.getId().toString(), results_att.get(hit.getId().toString()) + 1.0);
+					}
+				}
+			}
+			//Now we need to normalize the attributes_results score.
+			for(Map.Entry<String,Double> entry: results_att.entrySet()) {
+				if (results_att.containsKey(entry.getKey())) {	
+					results_att.put(entry.getKey(),score_attributes*(results_att.get(entry.getKey())/(double)total_num_attributes));
+				}
+			}
+			
+		}
+		//Now we need to sum them:
+		for (Map.Entry<String,Double> entry: results_att.entrySet()) {
+			if (results.containsKey(entry.getKey())) {
+				results.put(entry.getKey(), results.get(entry.getKey())+entry.getValue());
+			}else {
+				results.put(entry.getKey(),entry.getValue());
+			}
+		}
+		System.out.println("Search finished");
 	}
 		
 	public void CreateNames() {
@@ -77,12 +248,20 @@ public class ElasticSearchData {
 		Location = location;
 	}
 
-	public HashMap<String, String> getAttributes() {
+	public HashMap<String, Object> getAttributes() {
 		return attributes;
 	}
 
 
-	public void setAttributes(HashMap<String, String> attributes) {
+	public int getTotal_num_attributes() {
+		return total_num_attributes;
+	}
+
+	public void setTotal_num_attributes(int total_num_attributes) {
+		this.total_num_attributes = total_num_attributes;
+	}
+
+	public void setAttributes(HashMap<String, Object> attributes) {
 		this.attributes = attributes;
 	}
 

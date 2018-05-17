@@ -2,6 +2,7 @@ package Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
@@ -49,22 +50,23 @@ public class ButtonController implements ActionListener{
 				searchview.setVisible(true);
 			}else {
 				if (jBoto.getName().equals("Search")) {
-					
 					//Attributes stored in the HashMap (default value, value selected by the user)
 					data_elastic.setAttributes(searchview.getSelectedAttributes());
 					data_elastic.setCategory(searchview.getSelectedCategory());
 					data_elastic.setQuery(searchview.getSelectedQuery());
-					System.out.println("The information to send to ElasticSearch is: " );
-					System.out.println("Location: "+data_elastic.getLocation());
-					System.out.println("Query: " +data_elastic.getQuery());
-					System.out.println("Category: "+data_elastic.getCategory());
-					System.out.println("Print the selected attributes");
-					for ( String key : data_elastic.getAttributes().keySet() ) {
-					    System.out.println("Key: " + key);
-					    System.out.println("Value: " + data_elastic.getAttributes().get(key));
+					data_elastic.setTotal_num_attributes(searchview.getNum_attributes());
+					try {
+						data_elastic.Search();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					//Search function (Elastic Search)
-					data_elastic.Search();
+					data_elastic.Score();
+					results.CreateFakeResults();
+					results.PaintInformation();
+					
+					searchview.setVisible(false);
+					results.setVisible(true);
 					
 					//Update information to print in the results
 					//results.setTopNames(data_elastic.getTopNames());

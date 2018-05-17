@@ -69,28 +69,14 @@ public class Region_View extends JFrame implements ActionListener{
         //Add panels to the main panel
 		jpMain.add(jpCenter, BorderLayout.CENTER);
 		jpMain.add(jpSouth, BorderLayout.PAGE_END);
-				
-		//Do you really want to close the screen?
-		WindowListener exitListener = new WindowAdapter() {
-			@Override
-		    public void windowClosing(WindowEvent e) {
-		       int confirm = JOptionPane.showOptionDialog(
-		                        null, "Do you really want to close Blocket Price Recommendations app? ",
-		                        "Close Blocket Price Recommendations", JOptionPane.YES_NO_OPTION,
-		                        JOptionPane.WARNING_MESSAGE, null, null, null);
-		                if (confirm == 0) {
-		                    System.exit(0);
-		                }
-		            }
-		};
-		this.addWindowListener(exitListener);
-					
+									
 		//Paint the main background of our screen.
 	    paintBackground();
 				
 		//Main features of our main screen
 	    this.add(jpMain);
 	    this.setTitle("Blocket Price recommendations");
+		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		this.setLayout(new BorderLayout());
 		this.setSize(new Dimension(800,600));
 		this.setResizable(false);

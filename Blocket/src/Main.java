@@ -21,7 +21,6 @@ public class Main {
             @Override
             public void run() {
  
-      
             	    //ElasticSearch Structure (where we are going to store the data)
             		ElasticSearchData data_elastic = new ElasticSearchData();
             		Main_View main_view = new Main_View();

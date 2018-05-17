@@ -2,6 +2,7 @@ package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -12,7 +13,8 @@ import java.awt.GridLayout;
 
 	import javax.swing.InputMap;
 	import javax.swing.JButton;
-	import javax.swing.JComponent;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 	import javax.swing.JDialog;
 	import javax.swing.JFrame;
 	import javax.swing.JLabel;
@@ -23,8 +25,10 @@ import java.awt.GridLayout;
 	import javax.swing.JTextArea;
 	import javax.swing.KeyStroke;
 	import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.border.EmptyBorder;
 
-	import Controller.ButtonController;
+import Controller.ButtonController;
 
 	import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
@@ -39,10 +43,20 @@ import java.awt.GridLayout;
 	import javax.swing.AbstractAction;
 	import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 
 public class Results_View extends JFrame{
-		
+    		
+			public JCheckBox[] box = null;
+	 		public JPanel resultWindow = new JPanel();
+	 		private JScrollPane resultPane = new JScrollPane(resultWindow);
+	 		
+	 		public JPanel buttonWindow = new JPanel();
+	 		private JScrollPane buttonPane = new JScrollPane(buttonWindow);
+	 		
+	 		private String empty = "   ";
+	 		
 			//Main panel
 			private JPanel jpMain;
 			
@@ -56,6 +70,7 @@ public class Results_View extends JFrame{
 			
 			//Information from the elastic Search
 			private ArrayList<String> topNames = new ArrayList<String>();
+			private ArrayList<Double> topScores = new ArrayList<Double>();
 			private ArrayList<Double> topPrices = new ArrayList<Double>();
 			
 			private JPanel jpResults;
@@ -71,163 +86,130 @@ public class Results_View extends JFrame{
 			private ArrayList<JTextArea> topResults = new ArrayList<JTextArea>();
 			
 			//Variable for changing the background.
-			private static final String BACKGROUND = "../File/results5.png";
+			private static final String BACKGROUND = "../File/finalresults3.png";
 			
 			//Constructor
-			public Results_View(){
+			public Results_View(){	
+				topNames.clear();
+				topScores.clear();
+				//Paint the main screen
+				jbBack = new JButton();
+				jpMain = new JPanel();
+				jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
+				resultWindow.setLayout(new BoxLayout(resultWindow, BoxLayout.Y_AXIS));
+				resultWindow.setBackground(Color.white);
+				resultPane.setLayout(new ScrollPaneLayout());
+			    resultPane.setBorder( new EmptyBorder(10,10,10,0) );
+			    resultPane.setPreferredSize(new Dimension(400,450));
+			    resultPane.setBackground(Color.white);
+				jpMain.add(resultPane);
+				jpMain.setBackground(Color.white);
+		        		
 			
-				jpMain = new JPanel(new BorderLayout());
-				//Paint Center Panel.
-				DrawCenterPanel();
-				//Paint South Panel
-				DrawSouthPanel();
-				
-				//Do you really want to close the screen?
-				WindowListener exitListener = new WindowAdapter() {
-		            @Override
-		            public void windowClosing(WindowEvent e) {
-		                int confirm = JOptionPane.showOptionDialog(
-		                        null, "Do you really want to close Blocket Price Recommendations app? ",
-		                        "Close Blocket Price Recommendations", JOptionPane.YES_NO_OPTION,
-		                        JOptionPane.WARNING_MESSAGE, null, null, null);
-		                if (confirm == 0) {
-		                    System.exit(1);
-		                }
-		            }
-		        };
-		        this.addWindowListener(exitListener);
-						        
-		        //Paint the main background of our screen.
+				//Paint the main background of our screen.
 				paintBackground();
 				
 		        //Main features of our main screen
 				this.add(jpMain);
+				this.setSize(800,600);
 				this.setTitle("Blocket Price recommendations");
-		        this.setLayout(new BorderLayout());
-		        this.setSize(new Dimension(800,600));
+		        this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		        this.setResizable(false);
 			}
-			
-			public void DrawSouthPanel() {
-				jpSouth = new JPanel(new GridLayout(1,4));
-				
-				//Next button
-				iiBack = new ImageIcon(((new ImageIcon ("BackButton.png").getImage()).getScaledInstance(70,50, Image.SCALE_SMOOTH)));        
-			    jbBack = new JButton();
-			    jbBack.setPreferredSize(new Dimension(70,50));
-			    jbBack.setIcon(iiBack);
-			    jbBack.setOpaque(false);
-			    jbBack.setContentAreaFilled(false);
-			    jbBack.setBorderPainted(false);
-			    jbBack.setName("Back");
-					
-				//3.Add prices
-				JTextArea text_highest = new JTextArea(this.Highest);
-				JTextArea text_lowest = new JTextArea(this.Lowest);
-				JTextArea text_average = new JTextArea(this.Average);
-				text_highest.setEditable(false);
-				Font f = new Font("Courier", Font.BOLD, 13);
-				text_highest.setFont(f);
-				text_lowest.setEditable(false);
-				text_lowest.setFont(f);
-				text_average.setEditable(false);
-				text_average.setFont(f);
-				text_average.setSize(100,100);
-				text_highest.setSize(100,100);
-				text_lowest.setSize(100,100);
-				
-		
-				/*JLabel jlEmpty1 = new JLabel();
-				JLabel jlEmpty2 = new JLabel();
-				JLabel jlEmpty3 = new JLabel();
-				jlEmpty3.setBackground(Color.white);
-				jlEmpty1.setBackground(Color.white);
-				jlEmpty2.setBackground(Color.white);*/
-				
-			    jpSouth.add(text_highest,0,0);
-			    jpSouth.add(text_lowest,0,1);
-			    jpSouth.add(text_average,0,2);
-			    jpSouth.revalidate();
-			    jpSouth.add(jbBack,0,3);
-				jpSouth.setBackground(Color.white);
-			    jpMain.add(jpSouth,BorderLayout.SOUTH);
+	
+			public void CreateFakeResults() {
+				topNames.clear();
+				topScores.clear();
+				for(int i = 0; i < 10; i++) {
+					String resultName = "Result title is: " + i;
+					topNames.add(resultName);
+					topScores.add((double)i);
+				}			
+				Highest = "Highest price: 80 SEK";
+				Lowest = "Lowest price: 10 SEK";
+				Average = "Average price: 50 SEK";
 			}
-			
-			public void DrawCenterPanel() {
-				
-				//1. Painting the Results 				
-				jpCenter = new JPanel(new GridLayout(1,1,20,20));
-
-				jpResults = new JPanel(new GridLayout(10,1));
-				for(int i = 0; i < 10; i++) {					
-					JTextArea text = new JTextArea();
-					String aux;
-					if (topNames.isEmpty()) {
-						aux = " ";
-					}else {
-						aux = topNames.get(i);
-					}
-					text.setText(aux);
-					Font f = new Font("Courier", Font.BOLD, 13);
-					text.setFont(f);
-					text.setEditable(false);
-					text.setVisible(true);
-					//text.setSize(100,100);
-					text.setBackground(Color.white);
-					jpResults.add(text);
-				}
-				jpResults.revalidate();
-				jpResults.setBackground(Color.white);
-				jpCenter.add(jpResults);			
-								
-				//3.Add prices
-				/*prices = new JPanel(new GridLayout(3,1));
-				JTextArea text_highest = new JTextArea(this.Highest);
-				JTextArea text_lowest = new JTextArea(this.Lowest);
-				JTextArea text_average = new JTextArea(this.Average);
-				text_highest.setEditable(false);
-				Font f = new Font("Courier", Font.BOLD, 13);
-				text_highest.setFont(f);
-				text_lowest.setEditable(false);
-				text_lowest.setFont(f);
-				text_average.setEditable(false);
-				text_average.setFont(f);
-				text_average.setSize(100,100);
-				text_highest.setSize(100,100);
-				text_lowest.setSize(100,100);
-				prices.setSize(400,200);
-				prices.add(text_highest);
-				prices.add(text_lowest);
-				prices.add(text_average);
-				prices.revalidate();
-				prices.setBackground(Color.white);
-				jpCenter.add(prices);*/
-
-							
-				jpCenter.setBackground(Color.white);
-				jpCenter.revalidate();
-				jpMain.add(jpCenter,BorderLayout.CENTER);
-			}
-			
 			
 			public void PaintInformation() {
-				this.setVisible(false);
-				//prices.removeAll();
-				jpResults.removeAll();
-				jpCenter.removeAll();
-				jpSouth.removeAll();
-				jpMain.remove(jpSouth);
-				jpMain.remove(jpCenter);
-				jpMain.revalidate();
-				DrawCenterPanel();
-				DrawSouthPanel();
-				jpMain.revalidate();
-				this.revalidate();
-				this.repaint();
-				this.setVisible(true);
+				resultWindow.removeAll();
+				
+				int maxResultsToDisplay = 18;
+			    int i;
+			    for (int j = 0; j < 3; j++) {
+			    	String description = " ";
+			    	JPanel result = new JPanel();
+		    		result.setAlignmentX(Component.LEFT_ALIGNMENT);
+		    		result.setLayout(new BoxLayout(result, BoxLayout.X_AXIS));
+		    		result.setBackground(Color.white);
+		    		JLabel label = new JLabel(description);
+		    		label.setBackground(Color.white);
+		    		result.add(label);
+		    		resultWindow.add(result);
+		    		resultWindow.setBackground(Color.white);
+			    }
+			    for ( i=0;  i<maxResultsToDisplay; i++ ) {
+			    	if ( i < 10) {
+			    		String description = i + ". " + topNames.get(i) + "  		" + String.format("%.2f", topScores.get(i));
+			    		JPanel result = new JPanel();
+			    		result.setAlignmentX(Component.LEFT_ALIGNMENT);
+			    		result.setLayout(new BoxLayout(result, BoxLayout.X_AXIS));
+			    		result.setBackground(Color.white);
+			    		JLabel label = new JLabel(description);
+			    		label.setBackground(Color.white);
+			    		result.add(label);
+			    		resultWindow.add(result);
+			    		resultWindow.setBackground(Color.white);
+			    	}else {
+			    		String description = " ";
+			    		if (i >= 10 && i <=14) {
+			    			description = " ";
+			    		}else {
+			    			if (i == 15) {
+			    				description = Highest;
+			    			}else {
+			    				if ( i == 16) {
+			    					description = Lowest;
+			    				}else {
+			    					if ( i == 17) {
+			    						description = Average;
+			    					}
+			    				}
+			    			}
+			    		}
+			    		JPanel result = new JPanel();
+			    		result.setAlignmentX(Component.LEFT_ALIGNMENT);
+			    		result.setLayout(new BoxLayout(result, BoxLayout.X_AXIS));
+			    		result.setBackground(Color.white);
+			    		JLabel label = new JLabel(description);
+			    		label.setBackground(Color.white);
+			    		result.add(label);
+			    		resultWindow.add(result);
+			    		resultWindow.setBackground(Color.white);
+			    	}
+			    }
+				//Create the back button
+				//HomeButton
+				ImageIcon iiBack = new ImageIcon(((new ImageIcon ("BackButton.png").getImage()).getScaledInstance(70,70, Image.SCALE_SMOOTH)));        
+				jbBack.setPreferredSize(new Dimension(80,50));
+				jbBack.setIcon(iiBack);
+				jbBack.setOpaque(false);
+				jbBack.setContentAreaFilled(false);
+				jbBack.setBorderPainted(false);        
+				jbBack.setName("Back");
+				
+				JPanel result = new JPanel();
+				result.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				result.setLayout(new BoxLayout(result, BoxLayout.X_AXIS));
+	    		result.setBackground(Color.white);
+	    		result.add(jbBack);
+	    		resultWindow.add(result);
+	    		resultWindow.setBackground(Color.white);
+			
+			    revalidate();
+		        repaint();
 			}
 			
-			
+						
 			//Function to paint the background with the picture that we want.
 			 private void paintBackground(){
 				 try {

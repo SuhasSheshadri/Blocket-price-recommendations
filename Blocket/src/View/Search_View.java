@@ -41,8 +41,9 @@ public class Search_View extends JFrame implements ActionListener{
 	
 	
 	//Attributes to send in the HashMap
-	private HashMap<String,String> attributes_final;
+	private HashMap<String,Object> attributes_final;
 	
+	private int num_attributes;
 	
 	//Background
 	private static final String BACKGROUND = "../File/TRY3.png";
@@ -86,7 +87,7 @@ public class Search_View extends JFrame implements ActionListener{
 	
 	public Search_View(ConfigData data_config) {
 		
-		attributes_final = new HashMap<String,String>();
+		attributes_final = new HashMap<String,Object>();
 		
 		//Update global variable (ConfigData)
 		data = data_config;
@@ -111,28 +112,14 @@ public class Search_View extends JFrame implements ActionListener{
 		jpMain.add(jpNorth, BorderLayout.PAGE_START);
 		jpMain.add(jpSouth, BorderLayout.PAGE_END);
 		jpMain.setOpaque(false);
-		
-		//Do you really want to close the screen?
-		WindowListener exitListener = new WindowAdapter() {
-			@Override
-		    public void windowClosing(WindowEvent e) {
-		       int confirm = JOptionPane.showOptionDialog(
-		                        null, "Do you really want to close Blocket Price Recommendations app? ",
-		                        "Close Blocket Price Recommendations", JOptionPane.YES_NO_OPTION,
-		                        JOptionPane.WARNING_MESSAGE, null, null, null);
-		                if (confirm == 0) {
-		                    System.exit(0);
-		                }
-		            }
-		};
-		this.addWindowListener(exitListener);
-						
+								
 		//Paint the main background of our screen.
 	    paintBackground();				
 		//Main features of our main screen
 	    this.add(jpMain);
 	    this.setTitle("Blocket Price recommendations");
 		this.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		this.setSize(new Dimension(800,600));
 		this.setResizable(false);
 	}
@@ -336,9 +323,7 @@ public class Search_View extends JFrame implements ActionListener{
 		return this.current_query;
 	}
 	
-	//public ArrayList<String> getSelectedAttributes(){
-	public HashMap<String,String> getSelectedAttributes(){
-	
+	public HashMap<String,Object> getSelectedAttributes(){
 		//Get the selected attributes as a list:
 		selected_att.clear();
 		attributes_final.clear();
@@ -348,6 +333,7 @@ public class Search_View extends JFrame implements ActionListener{
 		int index_radio = 0;
 		int index_combo = 0;
 		
+		num_attributes = 0;
 		//Find in the data:
 		ArrayList<Attributes> att = this.data.getConfig_data().get(index).getAttributes();
 		for(int i = 0; i < att.size(); i++) {
@@ -355,6 +341,7 @@ public class Search_View extends JFrame implements ActionListener{
 			if (att.get(i).getType().equals("radio")) {
 				JRadioButton aux = radiobuttons.get(index_radio);
 				if (aux.isSelected()) {
+					num_attributes++;
 					selected_att.add(aux.getText());
 				}
 				index_radio ++;
@@ -372,6 +359,7 @@ public class Search_View extends JFrame implements ActionListener{
 						//Store the attributes name + the value.
 						attributes_final.put(key, value);
 						selected_att.add(element);	
+						num_attributes++;
 					}
 					index_combo++;	
 				}
@@ -384,5 +372,14 @@ public class Search_View extends JFrame implements ActionListener{
 	public void registerButtons(ButtonController controller){
 		 jbSearch.addActionListener(controller);
 		 jbHome.addActionListener(controller);
+	}
+	
+
+	public int getNum_attributes() {
+		return num_attributes;
+	}
+
+	public void setNum_attributes(int num_attributes) {
+		this.num_attributes = num_attributes;
 	}
 }

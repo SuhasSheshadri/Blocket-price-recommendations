@@ -65,25 +65,6 @@ public class Main_View extends JFrame{
         c.gridy = 300;
         jpMain.add(jpButton,c);
         
-        
-		//Do you really want to close the screen?
-		WindowListener exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                int confirm = JOptionPane.showOptionDialog(
-                        null, "Do you really want to close Blocket Price Recommendations app? ",
-                        "Close Blocket Price Recommendations", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE, null, null, null);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    System.out.println("Yes option");
-                	System.exit(1);   
-                }
-            }
-        };
-        
-        
-        
-        this.addWindowListener(exitListener);
 		
         //Paint the main background of our screen.
 		paintBackground();
@@ -91,6 +72,7 @@ public class Main_View extends JFrame{
         //Main features of our main screen
 		this.add(jpMain);
 		this.setTitle("Blocket Price recommendations");
+		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(800,600));
         this.setResizable(false);
