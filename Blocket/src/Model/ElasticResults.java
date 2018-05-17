@@ -6,12 +6,7 @@ public class ElasticResults {
 	private String Title = " ";
 	private String docId = " ";
 	private Double price;
-	
-	
-	
-	
-	
-	
+
 	public String getLocation() {
 		return Location;
 	}

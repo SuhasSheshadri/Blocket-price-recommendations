@@ -61,11 +61,12 @@ public class ButtonController implements ActionListener{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					data_elastic.Score();			
+					data_elastic.Score();
 					//Update information to print in the results
 					results.setTopNames(data_elastic.getTopNames());
 					results.setTopScores(data_elastic.getTopScores());
 					results.setTopPrices(data_elastic.getTopPrices());
+					results.Sort();
 					results.setAverage(data_elastic.getAverage());
 					results.setHighest(data_elastic.getHighest());
 					results.setLowest(data_elastic.getLowest());
@@ -74,7 +75,6 @@ public class ButtonController implements ActionListener{
 					results.setVisible(true);
 				}else {
 					if(jBoto.getName().equals("Back")) {
-						System.out.println("Back");
 						results.setVisible(false);
 						searchview.setVisible(true);
 					}else {

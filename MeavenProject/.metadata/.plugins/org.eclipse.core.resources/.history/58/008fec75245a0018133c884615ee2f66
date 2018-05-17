@@ -47,6 +47,7 @@ public class ElasticSearch {
 		for(int i = 0; i < adList.size(); i++) {
 			ad = adList.get(i);
 			json = ad.getJson();
+			Integer id = new Integer(i);
 			indexRequest = new IndexRequest(category, type, id_num.toString()).source(json);
 			id_num++;
 			client.index(indexRequest);

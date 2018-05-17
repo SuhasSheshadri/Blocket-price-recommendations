@@ -46,6 +46,9 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 
+/* 
+ * Implementation of the Results View
+ */
 public class Results_View extends JFrame{
     		
 			public JCheckBox[] box = null;
@@ -117,6 +120,60 @@ public class Results_View extends JFrame{
 		        this.setResizable(false);
 			}
 	
+			int partition(ArrayList<Double> arr, int low, int high){
+		        Double pivot = arr.get(high);
+		        int i = (low-1); // index of smaller element
+		        for (int j=low; j<high; j++){
+		            if (arr.get(j) >= pivot){
+		                i++;		 
+		                //Scores
+		                Double temp = arr.get(i);
+		                arr.set(i, arr.get(j));
+		                arr.set(j, temp);
+		                
+		                //Names
+		                String name = this.topNames.get(i);
+		                this.topNames.set(i, this.topNames.get(j));
+		                this.topNames.set(j,name);
+		                
+		                //Prices
+		                Integer price = this.topPrices.get(i);
+		                this.topPrices.set(i, this.topPrices.get(j));
+		                this.topPrices.set(j, price);
+		            }
+		        }
+		        Double temp = arr.get(i+1);
+		        arr.set(i+1, arr.get(high));
+		        arr.set(high,temp);
+		        
+		        //Names
+		        String name = this.topNames.get(i+1);
+                this.topNames.set(i+1, this.topNames.get(high));
+                this.topNames.set(high,name);
+		        
+                //Prices
+                Integer price = this.topPrices.get(i+1);
+                this.topPrices.set(i+1, this.topPrices.get(high));
+                this.topPrices.set(high, price);
+		        
+		        return i+1;
+		    }
+			
+			void sort_array(ArrayList<Double> arr, int low, int high){
+		        if (low < high) {
+		            int pi = partition(arr, low, high);
+		            sort_array(arr, low, pi-1);
+		            sort_array(arr, pi+1, high);
+		        }
+		    }
+			
+			
+			public void Sort() {
+		        int high = this.topScores.size();
+		        int low = 0;   
+		        sort_array(this.topScores, low, high-1);
+			}
+			
 			public void CreateFakeResults() {
 				topNames.clear();
 				topScores.clear();
@@ -150,7 +207,6 @@ public class Results_View extends JFrame{
 			    }
 			    for ( i=0;  i<maxResultsToDisplay; i++ ) {
 			    	if ( i < 10) {
-			    		System.out.println(topNames.size() + " " + topScores.size());
 			    		String description = i + ". " + topNames.get(i) + "  		" + String.format("%.2f", topScores.get(i));
 			    		JPanel result = new JPanel();
 			    		result.setAlignmentX(Component.LEFT_ALIGNMENT);
