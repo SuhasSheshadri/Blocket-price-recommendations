@@ -49,7 +49,6 @@ Finnaly, in the code zip folder that is previously extracted a Blocket folder is
 * [IntelliJ](https://www.jetbrains.com/idea/) - Used to edit/compile and run the code
 * [Eclipse](https://www.eclipse.org/) - Used to edit/compile and run the code
 
-
 ## Authors
 
 * **Sandra Pico** - *sandrapo@kth.se*
