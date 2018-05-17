@@ -4,6 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.search.SearchRequest;
@@ -18,17 +25,21 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 public class ElasticSearchData {
 	
 	//For the score terms
-	private Double score_attributes = 0.7;
-	private Double score_query = 0.3;
+	private Double score_attributes = 0.1;
+	private Double score_query = 0.9;
 
 	//Set by the Search View
 	private int total_num_attributes = 0;
-	
+
+	// Number of top Ads to be presented
+	public int NUM_ADS = 10;
 	//Results for the search (using user specifications)
 	Map<String, Double> results = new HashMap<String, Double>();
 	Map<String, Integer> results_prices = new HashMap<String,Integer>();
-	
-	//ElasticSearch connection
+    Map<String, String> id2title= new HashMap<String,String>();
+    Map<String, String> title2id= new HashMap<String,String>();
+
+    //ElasticSearch connection
 	private RestHighLevelClient client; 
 	
 	//Data that we need to send to the Elastic Search.
@@ -48,28 +59,105 @@ public class ElasticSearchData {
 	
 	//10 top results:
 	private ArrayList<String> topNames;
-	private ArrayList<Double> topPrices;
-	
+	private ArrayList<Integer> topPrices;
+	private ArrayList<Double> topScores;
+
 	public ElasticSearchData() {
 		topNames = new ArrayList<String>();
-		topPrices = new ArrayList<Double>();
+		topPrices = new ArrayList<Integer>();
+		topScores = new ArrayList<Double>();
 		attributes = new HashMap<String,Object>();
 		this.client = new RestHighLevelClient(
 				RestClient.builder(new HttpHost("localhost", 9200, "http")));
 	}
-	
-	
+
+
+    private Map<String, Double> sortMapByValues(Map<String, Double> aMap) {
+
+        Set<Entry<String,Double>> mapEntries = aMap.entrySet();
+
+//        System.out.println("Values and Keys before sorting ");
+//        for(Entry<String,Double> entry : mapEntries) {
+//            System.out.println(entry.getValue() + " - "+ entry.getKey());
+//        }
+
+        // used linked list to sort, because insertion of elements in linked list is faster than an array list.
+        List<Entry<String,Double>> aList = new LinkedList<Entry<String,Double>>(mapEntries);
+
+        // sorting the List
+        Collections.sort(aList, new Comparator<Entry<String,Double>>() {
+
+            @Override
+            public int compare(Entry<String, Double> ele1,
+                               Entry<String, Double> ele2) {
+
+                return ele2.getValue().compareTo(ele1.getValue());
+            }
+        });
+
+        // Storing the list into Linked HashMap to preserve the order of insertion.
+        Map<String,Double> aMap2 = new LinkedHashMap<String, Double>();
+        for(Entry<String,Double> entry: aList) {
+            aMap2.put(entry.getKey(), entry.getValue());
+        }
+
+        // printing values after soring of map
+//        System.out.println("Value " + " - " + "Key");
+//        for(Entry<String,Double> entry : aMap2.entrySet()) {
+//            System.out.println(entry.getValue() + " - " + entry.getKey());
+//        }
+        return aMap2;
+    }
+
 	public void Score() {
 		System.out.println("Score system");
-		//1. Now we have the correspondence score per each case.
-		
-		//1.0 Sort the HashMap based on the score associated.
-		
-		//2.0 Return the top 50 results or less.
-		
+		//1. Now we have the correspondence score per each ad.
+        System.out.println("Start");
+        //1.0 Sort the HashMap based on the score associated.
+        results = sortMapByValues(results);
+        //2.0 Return the top 50 results or less.
+        HashMap<String, Integer> topPrices = new HashMap<String, Integer>();
+
+        int numIter = 0;
+        int minPrice = Integer.MAX_VALUE;
+        int maxPrice = Integer.MIN_VALUE;
+        int sumPrice = 0;
+		for (Entry<String, Double> entry : results.entrySet()) {
+            if(numIter < NUM_ADS) {
+                int currPrice = results_prices.get(entry.getKey());
+                if (currPrice > maxPrice){
+                    maxPrice = currPrice;
+                }
+                if (currPrice < minPrice){
+                    minPrice = currPrice;
+                }
+                topPrices.put(id2title.get(entry.getKey()), currPrice);
+                System.out.println(entry.getKey() + " , " + entry.getValue() + " , " + results_prices.get(entry.getKey()) + " " + id2title.get(entry.getKey()));
+                sumPrice += currPrice;
+                numIter++;
+            }
+            else break;
+        }
 		//3.0 Calculate the highest, lowest and average price based on the top 50.
-		
-		//4.0 Update the names of the top 10 results based on. 
+        int iter = 0;
+        for(Entry<String, Integer> e : topPrices.entrySet()){
+            if(iter < NUM_ADS) {
+                this.topNames.add(e.getKey());
+                this.topPrices.add(e.getValue());
+                //System.out.println(title2id.get(e.getKey()));
+                //System.out.println(results.containsKey(title2id.get(e.getKey())));
+                this.topScores.add(results.get(title2id.get(e.getKey())));
+            } else break;
+            iter++;
+        }
+        Lowest = Integer.toString(minPrice);
+        Highest = Integer.toString(maxPrice);
+        Average = Integer.toString(sumPrice / topPrices.size());
+		System.out.println("Max : " + maxPrice);
+        System.out.println("Min : " + minPrice);
+        System.out.println("AVG : " + sumPrice / topPrices.size());
+		//4.0 Update the names of the top 10 results based on.
+
 	}
 	
 	
@@ -99,8 +187,11 @@ public class ElasticSearchData {
 		 
 		//1. Find all the documents that contain or all the terms in the query or only some of them.
 		for (int i = 0; i < query_size; i++) {
+		    System.out.println(i);
 			String query_part = query_parts[i];
-			//System.out.println("Find for :" +query_part);
+            System.out.println("QUERY parts " + query_part);
+
+            //System.out.println("Find for :" +query_part);
 			searchSourceBuilder.query(QueryBuilders.boolQuery().must(QueryBuilders.termQuery("region",location)).must(QueryBuilders.termQuery("title", query_part)));
 			searchRequest.source(searchSourceBuilder);
 			SearchResponse searchResponse = client.search(searchRequest);
@@ -113,6 +204,8 @@ public class ElasticSearchData {
 					results.put(hit.getId().toString(), 1.0);
 					String price = sourceAsMap.get("price").toString();
 					results_prices.put(hit.getId().toString(), Integer.parseInt(price));
+					id2title.put(hit.getId().toString(), title);
+					title2id.put(title, hit.getId().toString());
 				}else {
 					results.put(hit.getId().toString(), results.get(hit.getId().toString()) + 1.0);
 				}
@@ -124,7 +217,6 @@ public class ElasticSearchData {
 				results.put(entry.getKey(),score_query*(results.get(entry.getKey())/(double)query_size));
 			}
 		}
-		
 		System.out.println("The number of selected attributes is: " + total_num_attributes);
 		
 		//2. Now we are going to analyze the attributes.
@@ -180,11 +272,14 @@ public class ElasticSearchData {
 				for(SearchHit hit: searchHits) {
 					Map<String, Object> sourceAsMap = hit.getSourceAsMap();
 					//System.out.println(sourceAsMap);
-					if(!results_att.containsKey(hit.getId().toString())) {
+                    String title = sourceAsMap.get("title").toString();
+                    if(!results_att.containsKey(hit.getId().toString())) {
 						results_att.put(hit.getId().toString(), 1.0);
 						String price = sourceAsMap.get("price").toString();
 						results_prices.put(hit.getId().toString(), Integer.parseInt(price));
-					}else {
+                        id2title.put(hit.getId().toString(), title);
+                        title2id.put(title, hit.getId().toString());
+                    }else {
 						results_att.put(hit.getId().toString(), results_att.get(hit.getId().toString()) + 1.0);
 					}
 				}
@@ -205,40 +300,42 @@ public class ElasticSearchData {
 				results.put(entry.getKey(),entry.getValue());
 			}
 		}
-		System.out.println("Search finished");
+        System.out.println(" Size is " + results.size());
+
+        System.out.println("Search finished");
 	}
 		
-	public void CreateNames() {
-		for (int i = 0; i < 10; i++) {
-			String aux = "Title of the Result: "+i+ "djdlfakjshjfhlajksdhljfkahlsdkhfa  ";
-			topNames.add(aux);
-		}
-	}
-	
-	public void CreatePrices() {
-		for(int i =0 ; i < 10;i++) {
-			topPrices.add((double)i);
-		}
-	}
+//	public void CreateNames() {
+//		for (int i = 0; i < 10; i++) {
+//			String aux = "Title of the Result: "+i+ "djdlfakjshjfhlajksdhljfkahlsdkhfa  ";
+//			topNames.add(aux);
+//		}
+//	}
+//
+//	public void CreatePrices() {
+//		for(int i =0 ; i < 10;i++) {
+//			topPrices.add(i);
+//		}
+//	}
 
-	public void CalculatePrices() {
-		Double max = Double.MIN_VALUE;
-		Double min = Double.MAX_VALUE;
-		Double total = (double) 0;
-		for (int i = 0; i < topPrices.size(); i++) {
-			if (topPrices.get(i)>max) {
-				max = topPrices.get(i);
-			}
-			if (topPrices.get(i)<min) {
-				min = topPrices.get(i);
-			}
-			total = total + topPrices.get(i);
-		}
-		total = total/(double)topPrices.size();
-		this.Average = "Average:" +total.toString() + " SEK";
-		this.Highest = "Highest:" +max.toString() + " SEK";
-		this.Lowest = "Lowest:"+ min.toString() + " SEK";
-	}
+//	public void CalculatePrices() {
+//		Double max = Double.MIN_VALUE;
+//		Double min = Double.MAX_VALUE;
+//		Double total = (double) 0;
+//		for (int i = 0; i < topPrices.size(); i++) {
+//			if (topPrices.get(i)>max) {
+//				max = topPrices.get(i);
+//			}
+//			if (topPrices.get(i)<min) {
+//				min = topPrices.get(i);
+//			}
+//			total = total + topPrices.get(i);
+//		}
+//		total = total/(double)topPrices.size();
+//		this.Average = "Average:" +total.toString() + " SEK";
+//		this.Highest = "Highest:" +max.toString() + " SEK";
+//		this.Lowest = "Lowest:"+ min.toString() + " SEK";
+//	}
 	
 	public String getLocation() {
 		return Location;
@@ -321,12 +418,17 @@ public class ElasticSearchData {
 	}
 
 
-	public ArrayList<Double> getTopPrices() {
+	public ArrayList<Integer> getTopPrices() {
 		return topPrices;
 	}
 
+    public void setTopScores(ArrayList<Double> topScores) {
+        this.topScores = topScores;
+    }
 
-	public void setTopPrices(ArrayList<Double> topPrices) {
+    public ArrayList<Double> getTopScores() {return this.topScores;}
+
+	public void setTopPrices(ArrayList<Integer> topPrices) {
 		this.topPrices = topPrices;
 	}
 

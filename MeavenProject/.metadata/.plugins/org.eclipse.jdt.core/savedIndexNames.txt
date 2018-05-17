@@ -13,6 +13,7 @@ INDEX VERSION 1.127+C:\Users\Dusan\Desktop\KTH-VT18\Craigslist-price-recommendat
 561630904.index
 218806926.index
 2049398838.index
+1942679963.index
 916900781.index
 2088728460.index
 1691509994.index

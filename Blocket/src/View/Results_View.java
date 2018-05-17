@@ -71,7 +71,7 @@ public class Results_View extends JFrame{
 			//Information from the elastic Search
 			private ArrayList<String> topNames = new ArrayList<String>();
 			private ArrayList<Double> topScores = new ArrayList<Double>();
-			private ArrayList<Double> topPrices = new ArrayList<Double>();
+			private ArrayList<Integer> topPrices = new ArrayList<Integer>();
 			
 			private JPanel jpResults;
 			private JPanel prices;
@@ -149,6 +149,7 @@ public class Results_View extends JFrame{
 			    }
 			    for ( i=0;  i<maxResultsToDisplay; i++ ) {
 			    	if ( i < 10) {
+			    		System.out.println(topNames.size() + " " + topScores.size());
 			    		String description = i + ". " + topNames.get(i) + "  		" + String.format("%.2f", topScores.get(i));
 			    		JPanel result = new JPanel();
 			    		result.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -239,16 +240,20 @@ public class Results_View extends JFrame{
 
 			
 
-			public ArrayList<Double> getTopPrices() {
+			public ArrayList<Integer> getTopPrices() {
 				return topPrices;
 			}
 
 
-			public void setTopPrices(ArrayList<Double> topPrices) {
+			public void setTopPrices(ArrayList<Integer> topPrices) {
 				this.topPrices = topPrices;
 			}
 
+			public void setTopScores(ArrayList<Double> topScores) {
+		this.topScores = topScores;
+	}
 
+			public ArrayList<Double> getTopScores() {return this.topScores;}
 			public void setTopNames(ArrayList<String> topNames) {
 				this.topNames = topNames;
 			}

@@ -62,21 +62,23 @@ public class ButtonController implements ActionListener{
 						e.printStackTrace();
 					}
 					data_elastic.Score();
-					results.CreateFakeResults();
-					results.PaintInformation();
+					//results.CreateFakeResults();
+					//results.PaintInformation();
 					
-					searchview.setVisible(false);
-					results.setVisible(true);
+					//searchview.setVisible(false);
+					//results.setVisible(true);
 					
 					//Update information to print in the results
-					//results.setTopNames(data_elastic.getTopNames());
-					//results.setTopPrices(data_elastic.getTopPrices());
-					//results.setAverage(data_elastic.getAverage());
-					//results.setHighest(data_elastic.getHighest());
-					//results.setLowest(data_elastic.getLowest());	
-					//searchview.setVisible(false);
-					//results.PaintInformation();
-					//results.setVisible(true);
+
+					results.setTopNames(data_elastic.getTopNames());
+					results.setTopScores(data_elastic.getTopScores());
+					results.setTopPrices(data_elastic.getTopPrices());
+					results.setAverage(data_elastic.getAverage());
+					results.setHighest(data_elastic.getHighest());
+					results.setLowest(data_elastic.getLowest());
+					searchview.setVisible(false);
+					results.PaintInformation();
+					results.setVisible(true);
 				}else {
 					if(jBoto.getName().equals("Back")) {
 						System.out.println("Back");

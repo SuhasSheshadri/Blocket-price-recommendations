@@ -44,7 +44,7 @@ public class Crawler {
 			adList = new ArrayList<Ad>();
 			url = "https://www.blocket.se/" + region + "?q=" + query + "&cg=" + catStr2Code.get(category);
 			newUrl = url;
-			
+			System.out.println(" Region : " + region);
 			doc = getDoc(url);
 			imports = doc.select("link[href]");
 			numb_hits = doc.select("span.num_hits").first();
@@ -167,7 +167,7 @@ public class Crawler {
 	} 
 	
 	private Document getDoc(String url) throws IOException {
-		print("Fetching %s...", url);
+		//print("Fetching %s...", url);
 		Document doc = Jsoup.connect(url).get();
 		return doc;
 	}
