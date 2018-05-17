@@ -16,15 +16,6 @@ public class Ad {
 		json.put(priceName, price);
 		json.put(regionName, region);
 	}
-
-	public Ad(String title, String price, String region) {
-		json.put(titleName, title);
-		String attributes = "att1";
-		json.put(attributeName, attributes);
-		json.put(priceName, price);
-		json.put(regionName, region);
-	}
-
 	
 	public Map<String, Object> getJson() {
 		return this.json;
