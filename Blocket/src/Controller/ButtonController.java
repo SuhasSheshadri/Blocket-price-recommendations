@@ -45,7 +45,7 @@ public class ButtonController implements ActionListener{
 				//Place :)
 				String place_aux = regionview.getPlace();
 				String[] parts = place_aux.split(".png");				
-				data_elastic.setLocation(parts[0]);
+				data_elastic.setLocation(parts[0].toLowerCase());
 				regionview.setVisible(false);
 				searchview.setVisible(true);
 			}else {
@@ -61,15 +61,8 @@ public class ButtonController implements ActionListener{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					data_elastic.Score();
-					//results.CreateFakeResults();
-					//results.PaintInformation();
-					
-					//searchview.setVisible(false);
-					//results.setVisible(true);
-					
+					data_elastic.Score();			
 					//Update information to print in the results
-
 					results.setTopNames(data_elastic.getTopNames());
 					results.setTopScores(data_elastic.getTopScores());
 					results.setTopPrices(data_elastic.getTopPrices());

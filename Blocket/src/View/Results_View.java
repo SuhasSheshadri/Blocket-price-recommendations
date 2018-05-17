@@ -132,6 +132,7 @@ public class Results_View extends JFrame{
 			
 			public void PaintInformation() {
 				resultWindow.removeAll();
+		
 				
 				int maxResultsToDisplay = 18;
 			    int i;
