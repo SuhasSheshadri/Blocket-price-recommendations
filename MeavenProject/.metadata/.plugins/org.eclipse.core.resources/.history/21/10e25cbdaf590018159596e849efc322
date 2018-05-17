@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * Crawler program to index all the ads in specific category.
+ * Example program to list links from a URL.
  */
 public class Crawler {
 

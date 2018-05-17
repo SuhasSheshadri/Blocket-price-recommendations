@@ -29,17 +29,17 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 public class ElasticSearch {
 
+	private Integer id_num;
 	private RestHighLevelClient client; 
 	
 	public ElasticSearch() {
+		id_num = 0;
 		this.client = new RestHighLevelClient(
 				RestClient.builder(new HttpHost("localhost", 9200, "http")));
 	}
 	
 	public void indexAds(List<Ad> adList, String category, String region) throws IOException {
-		
 		category = category.toLowerCase();
-		
 		IndexRequest indexRequest;
 		Ad ad;
 		Map<String, Object> json;
@@ -48,7 +48,8 @@ public class ElasticSearch {
 			ad = adList.get(i);
 			json = ad.getJson();
 			Integer id = new Integer(i);
-			indexRequest = new IndexRequest(category, type, id.toString()).source(json);
+			indexRequest = new IndexRequest(category, type, id_num.toString()).source(json);
+			id_num++;
 			client.index(indexRequest);
 		}
 	}
