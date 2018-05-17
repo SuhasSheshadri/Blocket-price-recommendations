@@ -3,6 +3,10 @@ package com.price_recomendation;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class for storing Ads before indexing it and each Ad has a JSON representation as a HashMap. 
+ * 
+ */
 public class Ad {
 	private String titleName = "title";
 	private String attributeName = "attributes";
