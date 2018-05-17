@@ -126,6 +126,7 @@ public class Crawler {
 				String childText = child.text();
 				String attrName = childText.split("\\s")[0];
 				String attrValue = childText.replaceAll(attrName,"").replaceAll("\\s", "");
+				//System.out.println("Attr name: " + attrName + " attr value: " + attrValue + " (" + adLink + ")");
 				if(attrValue.contains("-") && !attrValue.equals("-") && attrName.equals("Miltal")){
 					String firstRange = attrValue.split("-")[0];
 					int secondRange = Integer.parseInt(attrValue.replaceAll(firstRange, "").replaceAll("-", ""));

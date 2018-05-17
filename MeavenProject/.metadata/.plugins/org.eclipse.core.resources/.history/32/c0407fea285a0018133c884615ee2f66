@@ -53,10 +53,15 @@ public class Crawler {
 
 			while(!(titles.size()==0)) {
 				doc = getDoc(url);
+				//System.out.println(" Fetching " + url);
+				// Elements links = doc.select("a[href]");
 				imports = doc.select("link[href]");
 				numb_hits = doc.select("span.num_hits").first();
 				numResults = Integer.parseInt(numb_hits.text());
-
+				//System.out.println("This is the pagenav " + doc.select("li[itemprop=url]").first());
+				
+				//Prints
+				//print("\nImports: (%d)", imports.size());
 				for (Element link : imports) {
 					//print(" * %s <%s> (%s)", link.tagName(), link.attr("abs:href"), link.attr("rel"));
 					if(link.attr("rel").equals("next")) {
@@ -70,7 +75,9 @@ public class Crawler {
 					System.out.println(" No results");
 					break;
 				}else {
+					//System.out.println(numResults + " results for searched query");
 					adList = adList(doc, region, adList);
+					//System.out.println(" Number of ads with prices " + adList.size());
 				}
 				
 				//Next page 
@@ -86,6 +93,7 @@ public class Crawler {
 			elastic.indexAds(adList, category, region);
 			allAds.addAll(adList);
 		}
+	//	}
 		
 		return allAds;
 	}
@@ -108,6 +116,7 @@ public class Crawler {
 				}
 				HashMap<String, Object> ad2Attr = getAttributes(adLink);
 				price = Integer.parseInt(prices.get(i).text().split("kr")[0].replaceAll("[^0-9.]", ""));
+				//price = prices.get(i).text();
 				Ad ad = new Ad(title,ad2Attr, price, region);
 				adList.add(ad);
 			}
@@ -120,12 +129,14 @@ public class Crawler {
 		
 		Document doc = getDoc(adLink);
 		Elements itemDetails = doc.select("div[id=item_details]");
+		//System.out.println(itemDetails.size());
 		for (Element elem : itemDetails){
 			Elements children = elem.children();
 			for (Element child : children){
 				String childText = child.text();
 				String attrName = childText.split("\\s")[0];
 				String attrValue = childText.replaceAll(attrName,"").replaceAll("\\s", "");
+				//System.out.println("Attr name: " + attrName + " attr value: " + attrValue + " (" + adLink + ")");
 				if(attrValue.contains("-") && !attrValue.equals("-") && attrName.equals("Miltal")){
 					String firstRange = attrValue.split("-")[0];
 					int secondRange = Integer.parseInt(attrValue.replaceAll(firstRange, "").replaceAll("-", ""));
