@@ -1,5 +1,4 @@
-# Project Title
-Blocket price recommendation system -
+# Blocket price recommendation system
 The following price recommendation system is able to provide users useful insight regarding a product that they would like to sell / buy in a single place. The system is based on the advertisements available on Blocket’s website. It fetches all the advertisements from www.blocket.se , indexes it in the local system and keep it ready for users to get useful information from it. This is done by typing the query entered by the user which describes the product, during their search operation. The users are provided with an option to select appropriate categories and their attributes (if any present, as seen on Blocket). The final information, based on the search query and the categories / attributes selected are displayed on the screen. The information presented to the user shows a range of prices for which a user could sell the product, like the minimum, maximum and average prices. 
 
 ### Prerequisites
