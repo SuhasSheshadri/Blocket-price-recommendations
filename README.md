@@ -52,7 +52,7 @@ Elastic Search 6.2.4 (https://www.elastic.co/downloads/elasticsearch)
 * **Sandra Pico** - *sandrapo@kth.se*
 * **Dusan Viktor Hrstic** - *hrstic@kth.se* 
 * **Andreas Rosenback** - *rosenba@kth.se*
-* **Suhas Iyengar** - *suhass@kth.se*
+* **Suhas Sheshadri** - *suhass@kth.se*
 
 
 
